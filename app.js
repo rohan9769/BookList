@@ -25,7 +25,33 @@ UI.prototype.addBookToList = function(book){
     list.appendChild(row)
 }
 
-ui.prototype.clearFields = function(){
+// Showing Alerts
+UI.prototype.showAlert = function(message,className){
+    // Creating a div
+    const div = document.createElement('div')
+
+    //Adding class
+    div.className = `alert ${className}`
+
+    //Adding Text
+    div.appendChild(document.createTextNode(message))
+
+    // Get Parent
+    const container = document.querySelector('.container')
+
+    const form = document.querySelector('#book-form')
+
+    // Inserting Alert
+    container.insertBefore(div,form)
+
+    // Setting a Timeout
+    setTimeout(function(){
+        document.querySelector('.alert').remove();
+    },3000)
+}
+
+// Clearing Fields
+UI.prototype.clearFields = function(){
     document.getElementById('title').value = '';
     document.getElementById('author').value = '';
     document.getElementById('isbn').value = '';
@@ -46,12 +72,24 @@ function(e){
     // Instantiating UI
     const ui = new UI()
 
-    // Adding Book to List
-    ui.addBookToList(book)
+    // Validations
+    if(title === '' || author === '' || isbn === ''){
+        // Error Alert
+        ui.showAlert('Please Enter all fields','error')
+    }
+    else{
+        // Adding Book to List
+        ui.addBookToList(book)
 
-    // Clear fields
-    ui.clearFields()
+        // Showing Success
+        ui.showAlert('Book Added','success')
 
+        // Clear fields
+        ui.clearFields()
+
+    }
+
+    
 
     console.log(title,author,isbn)
     e.preventDefault()
