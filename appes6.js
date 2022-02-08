@@ -61,6 +61,55 @@ class UI{
     }
 }
 
+// Adding Local Storage
+class Store{
+
+    static getBooks(){
+        // This function will fetch books from Local Storage
+        let books;
+        if(localStorage.getItem('books') === null){
+             books = []
+        }
+        else{
+            books = JSON.parse(localStorage.getItem('books'))
+            
+        }
+        return books
+    }
+
+
+    static displayBooks(){
+        const books = Store.getBooks()
+        books.forEach(function(book){
+            const ui = new UI
+
+            // Adding Book to UI
+            ui.addBookToList(book)
+        })
+    }
+
+    static addBook(book){
+        const books = Store.getBooks();
+
+        books.push(book)
+        localStorage.setItem('books',JSON.stringify(books));
+    }
+
+    static removeBook(isbn){
+        const books = Store.getBooks()
+
+        books.forEach(function(book){
+            if(book.isbn === isbn){
+                books.splice(index,1)
+            }
+        })
+        localStorage.setItem('books',JSON.stringify(books))
+    }
+}
+
+// DOM Load Event
+document.addEventListener('DOMContentLoaded',Store.displayBooks)
+
 // Event Listeners
 document.getElementById('book-form').addEventListener('submit',
 function(e){
@@ -85,6 +134,9 @@ function(e){
         // Adding Book to List
         ui.addBookToList(book)
 
+        // Adding Book to Localstorage
+        Store.addBook(book)
+
         // Showing Success
         ui.showAlert('Book Added','success')
 
@@ -104,6 +156,9 @@ document.getElementById('book-list').addEventListener('click',
 
         // deleting a book
         ui.deleteBook(e.target)
+
+        // Removing Book from localt storage
+        Store.removeBook(e.target.parentElement.previousElementSibling.textContent)
 
         // Show a message
         ui.showAlert('Book Removed','success')

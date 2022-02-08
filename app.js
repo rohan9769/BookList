@@ -100,6 +100,9 @@ function(e){
     e.preventDefault()
 })
 
+
+
+
 // Adding event listener for delete button
 document.getElementById('book-list').addEventListener('click',
     function(e){
