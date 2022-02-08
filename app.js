@@ -50,6 +50,13 @@ UI.prototype.showAlert = function(message,className){
     },3000)
 }
 
+// Prototype for deleting a book
+UI.prototype.deleteBook = function(target){
+    if(target.className === 'delete'){
+        target.parentElement.parentElement.remove();
+    }
+}
+
 // Clearing Fields
 UI.prototype.clearFields = function(){
     document.getElementById('title').value = '';
@@ -89,8 +96,21 @@ function(e){
 
     }
 
-    
-
     console.log(title,author,isbn)
     e.preventDefault()
 })
+
+// Adding event listener for delete button
+document.getElementById('book-list').addEventListener('click',
+    function(e){
+        const ui = new UI()
+
+        // deleting a book
+        ui.deleteBook(e.target)
+
+        // Show a message
+        ui.showAlert('Book Removed','success')
+
+        e.preventDefault()
+    }
+)
